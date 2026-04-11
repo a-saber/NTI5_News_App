@@ -23,16 +23,16 @@ class WeatherView extends StatelessWidget {
                   return CircularProgressIndicator();
                 }
                 else if(state is WeatherError){
-                  return Center(child: Text(cubit.error ?? ''),);
+                  return Center(child: Text(state.error),);
                 }
-                else if(state is WeatherSuccess && cubit.responseModel != null){
+                else if(state is WeatherSuccess ){
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:
                     [
-                     Text(cubit.responseModel!.name ?? '', style: TextStyle(fontSize: 30),),
-                     Text(cubit.responseModel!.sys?.country ?? ''),
-                     Text(cubit.responseModel!.weather?.first.main ?? ''),
+                     Text(state.responseModel.name ?? '', style: TextStyle(fontSize: 30),),
+                     Text(state.responseModel.sys?.country ?? ''),
+                     Text(state.responseModel.weather?.first.main ?? ''),
                     ],
                   );
 

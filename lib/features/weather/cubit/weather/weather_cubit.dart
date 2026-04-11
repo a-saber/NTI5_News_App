@@ -9,20 +9,16 @@ class WeatherCubit extends Cubit<WeatherStates>{
   WeatherCubit(): super(WeatherInitial());
   static WeatherCubit get(context)=> BlocProvider.of(context);
 
-  WeatherModel? responseModel;
-  String? error;
   WeatherRepo repo = WeatherRepo();
   fetchWeather() async{
     emit(WeatherLoading());
     var result = await repo.fetchWeather();
     result.fold(
             (error) {
-          this.error = error;
-          emit(WeatherError());
+          emit(WeatherError(error));
         },
             (model){
-          responseModel = model;
-          emit(WeatherSuccess());
+          emit(WeatherSuccess(model));
         }
     );
   }
