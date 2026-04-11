@@ -10,7 +10,7 @@ class NewsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=> NewsCubit()..fetchTasks(),
+      create: (context)=> NewsCubit()..fetchNews(),
       child: Scaffold(
         appBar: AppBar(
           title: Text('News'),

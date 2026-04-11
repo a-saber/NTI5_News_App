@@ -26,5 +26,25 @@ class NewsRepo{
       return left(ApiResponse.fromError(e).message);
     }
   }
+  Future<Either<String, FetchArticlesResponseModel>> fetchTopHeadlines() async
+  {
+    try{
+      var apiHelper = APIHelper();
+      var result = await apiHelper.getRequest(endPoint: EndPoints.topHeadlines);
+      if(result.status){
+        var responseModel = FetchArticlesResponseModel.fromJson(result.data as Map<String, dynamic>);
+        return Right(responseModel);
+
+      }
+      else{
+        return left(result.message);
+      }
+
+    }
+    catch(e){
+      return left(ApiResponse.fromError(e).message);
+    }
+  }
+
 
 }

@@ -12,7 +12,7 @@ class NewsCubit extends Cubit<NewsState>{
   FetchArticlesResponseModel? responseModel;
   String? error;
   NewsRepo repo = NewsRepo();
-  fetchTasks() async{
+  fetchNews() async{
     emit(NewsLoadingState());
     var result = await repo.fetchArticles();
     result.fold(
