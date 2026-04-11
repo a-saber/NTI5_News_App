@@ -35,6 +35,11 @@ class APIHelper {
               print(" EndPoint : ${options.path}");
               print('full url : ${options.uri.toString()}');
 
+              // add api key to query params
+              var apiKey = '836086f05b344448a16dd41ee51c6320';
+
+              options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
+
               return handler.next(options);
             },
             onError: (error, handler) async {
