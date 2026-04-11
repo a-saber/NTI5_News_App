@@ -3,59 +3,105 @@ import 'package:dio/dio.dart';
 import 'api_response.dart';
 import 'end_points.dart';
 
-class APIHelper {
-  static final APIHelper _apiHelper = APIHelper._internal();
+class NewsAPIHelper extends APIHelper {
+  @override
+  Dio dio  =
+  Dio(
+    BaseOptions(
+      baseUrl: EndPoints.baseURL,
+      connectTimeout: const Duration(seconds: 10),
+      sendTimeout: const Duration(minutes: 5),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  )
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          print("--- Headers : ${options.headers.toString()}");
+          try {
+            print("data : ${(options.data as FormData).fields.toString()}");
+          } catch (e) {
+            print("data : ${options.data.toString()}");
+          }
+          print("method : ${options.method}");
+          print(" EndPoint : ${options.path}");
+          print('full url : ${options.uri.toString()}');
 
-  factory APIHelper() {
-    return _apiHelper;
-  }
+          // add api key to query params
+          var apiKey = '836086f05b344448a16dd41ee51c6320';
 
-  APIHelper._internal();
+          options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
+
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          print(
+            "------ ON ERROR ${error.toString()} \n---- BODY ${error.response?.data.toString()}",
+          );
+          return handler.next(error);
+        },
+        onResponse: (response, handler) {
+          print(
+            "------ ON RESPONSE ${response.realUri.toString()} ${response.toString()}",
+          );
+          return handler.next(response);
+        },
+      ),
+    );
+
+}
+class WeatherAPIHelper extends APIHelper {
+  @override
+  Dio dio  =
+  Dio(
+    BaseOptions(
+      baseUrl: EndPoints.weatherBaseURL,
+      connectTimeout: const Duration(seconds: 10),
+      sendTimeout: const Duration(minutes: 5),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  )
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          print("--- Headers : ${options.headers.toString()}");
+          try {
+            print("data : ${(options.data as FormData).fields.toString()}");
+          } catch (e) {
+            print("data : ${options.data.toString()}");
+          }
+          print("method : ${options.method}");
+          print(" EndPoint : ${options.path}");
+          print('full url : ${options.uri.toString()}');
+
+          // add api key to query params
+          var apiKey = '836086f05b344448a16dd41ee51c6320';
+
+          options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
+
+          return handler.next(options);
+        },
+        onError: (error, handler) async {
+          print(
+            "------ ON ERROR ${error.toString()} \n---- BODY ${error.response?.data.toString()}",
+          );
+          return handler.next(error);
+        },
+        onResponse: (response, handler) {
+          print(
+            "------ ON RESPONSE ${response.realUri.toString()} ${response.toString()}",
+          );
+          return handler.next(response);
+        },
+      ),
+    );
+}
+
+abstract class APIHelper {
+
 
   // declaring dio
-  static Dio dio =
-      Dio(
-          BaseOptions(
-            baseUrl: EndPoints.baseURL,
-            connectTimeout: const Duration(seconds: 10),
-            sendTimeout: const Duration(minutes: 5),
-            receiveTimeout: const Duration(seconds: 10),
-          ),
-        )
-        ..interceptors.add(
-          InterceptorsWrapper(
-            onRequest: (options, handler) {
-              print("--- Headers : ${options.headers.toString()}");
-              try {
-                print("data : ${(options.data as FormData).fields.toString()}");
-              } catch (e) {
-                print("data : ${options.data.toString()}");
-              }
-              print("method : ${options.method}");
-              print(" EndPoint : ${options.path}");
-              print('full url : ${options.uri.toString()}');
-
-              // add api key to query params
-              var apiKey = '836086f05b344448a16dd41ee51c6320';
-
-              options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
-
-              return handler.next(options);
-            },
-            onError: (error, handler) async {
-              print(
-                "------ ON ERROR ${error.toString()} \n---- BODY ${error.response?.data.toString()}",
-              );
-              return handler.next(error);
-            },
-            onResponse: (response, handler) {
-              print(
-                "------ ON RESPONSE ${response.realUri.toString()} ${response.toString()}",
-              );
-              return handler.next(response);
-            },
-          ),
-        );
+  abstract Dio dio;
 
   // get request
 

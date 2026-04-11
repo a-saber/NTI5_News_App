@@ -7,10 +7,11 @@ import '../../../../core/network/api_helper.dart';
 
 class NewsRepo{
 
+  var apiHelper = NewsAPIHelper();
+
   Future<Either<String, FetchArticlesResponseModel>> fetchArticles() async
   {
     try{
-      var apiHelper = APIHelper();
       var result = await apiHelper.getRequest(endPoint: EndPoints.everything);
       if(result.status){
         var responseModel = FetchArticlesResponseModel.fromJson(result.data as Map<String, dynamic>);
@@ -29,7 +30,6 @@ class NewsRepo{
   Future<Either<String, FetchArticlesResponseModel>> fetchTopHeadlines() async
   {
     try{
-      var apiHelper = APIHelper();
       var result = await apiHelper.getRequest(endPoint: EndPoints.topHeadlines);
       if(result.status){
         var responseModel = FetchArticlesResponseModel.fromJson(result.data as Map<String, dynamic>);

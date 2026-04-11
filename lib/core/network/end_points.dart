@@ -4,5 +4,5 @@ abstract class EndPoints {
   static const String topHeadlines = 'top-headlines';
 
 
-
+  static const String weatherBaseURL = 'https://newsapi.org/v2/';
 }
