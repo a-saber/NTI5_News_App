@@ -75,9 +75,9 @@ class WeatherAPIHelper extends APIHelper {
           print('full url : ${options.uri.toString()}');
 
           // add api key to query params
-          var apiKey = '836086f05b344448a16dd41ee51c6320';
+          var appId = '39ef56aa87e0f9d833e66cd9111de959';
 
-          options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
+          options.queryParameters.addAll({'appid': appId});
 
           return handler.next(options);
         },
