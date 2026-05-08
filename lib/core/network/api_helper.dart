@@ -30,7 +30,7 @@ class NewsAPIHelper extends APIHelper {
           // add api key to query params
           var apiKey = '836086f05b344448a16dd41ee51c6320';
 
-          options.queryParameters.addAll({'apiKey': apiKey, 'q': 'e'});
+          options.queryParameters.addAll({'apiKey': apiKey});
 
           return handler.next(options);
         },

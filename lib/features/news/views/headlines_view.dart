@@ -10,7 +10,7 @@ class HeadlinesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context)=> HeadlinesCubit()..fetchTasks(),
+        create: (context)=> HeadlinesCubit()..fetchArticles(),
         child: Scaffold(
           appBar: AppBar(
             title: Text('Top Headlines'),
@@ -22,18 +22,18 @@ class HeadlinesView extends StatelessWidget {
                   return CircularProgressIndicator();
                 }
                 else if(state is TopHeadlinesErrorState){
-                  return Center(child: Text(cubit.error ?? ''),);
+                  return Center(child: Text(state.error ?? ''),);
                 }
-                else if(state is TopHeadlinesSuccessState && cubit.responseModel != null){
+                else if(state is TopHeadlinesSuccessState && state.responseModel.articles != null){
                   return Column(
                     children:
                     [
-                      Text('${cubit.responseModel!.totalResults ?? 0}'),
+                      Text('${state.responseModel.totalResults ?? 0}'),
                       Expanded(
                         child: ListView.separated(
-                            itemBuilder: (context, index)=> Text(cubit.responseModel!.articles?[index].title??''),
+                            itemBuilder: (context, index)=> Text(state.responseModel!.articles?[index].title??''),
                             separatorBuilder: (context, index)=> SizedBox(height: 20,),
-                            itemCount: cubit.responseModel!.articles!.length
+                            itemCount: state.responseModel!.articles!.length
                         ),
                       )
                     ],

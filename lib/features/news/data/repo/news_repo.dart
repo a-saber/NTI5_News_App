@@ -27,10 +27,16 @@ class NewsRepo{
       return left(ApiResponse.fromError(e).message);
     }
   }
-  Future<Either<String, FetchArticlesResponseModel>> fetchTopHeadlines() async
+  Future<Either<String, FetchArticlesResponseModel>> fetchTopHeadlines({
+    String? category,
+    String? search
+}) async
   {
     try{
-      var result = await apiHelper.getRequest(endPoint: EndPoints.topHeadlines);
+      var result = await apiHelper.getRequest(endPoint: EndPoints.topHeadlines, queryParams: {
+        'category': category,
+        'q': search
+      });
       if(result.status){
         var responseModel = FetchArticlesResponseModel.fromJson(result.data as Map<String, dynamic>);
         return Right(responseModel);

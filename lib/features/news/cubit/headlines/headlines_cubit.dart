@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nti5_news_app/features/news/cubit/headlines/headlines_states.dart';
 
@@ -5,23 +6,42 @@ import '../../data/models/article_model.dart';
 import '../../data/repo/news_repo.dart';
 
 class HeadlinesCubit extends Cubit<TopHeadlinesStates>{
-  HeadlinesCubit() : super(TopHeadlinesInitialState());
+  HeadlinesCubit() : super(TopHeadlinesInitialState()){
+    fetchArticles();
+  }
   static HeadlinesCubit get(context)=> BlocProvider.of(context);
 
-  FetchArticlesResponseModel? responseModel;
-  String? error;
+
+  final List<String> categories = [
+
+    'business',
+    'entertainment',
+    'general',
+    'health',
+    'science',
+    'sports',
+    'technology'
+  ];
+  int categoryIndex = 0;
+  void onCategoryChanged(int newIndex){
+    categoryIndex = newIndex;
+    fetchArticles();
+  }
   NewsRepo repo = NewsRepo();
-  fetchTasks() async{
+  var search = TextEditingController();
+
+  fetchArticles() async{
     emit(TopHeadlinesLoadingState());
-    var result = await repo.fetchTopHeadlines();
+    var result = await repo.fetchTopHeadlines(
+        category: categories[categoryIndex],
+      search: search.text
+    );
     result.fold(
             (error) {
-          this.error = error;
-          emit(TopHeadlinesErrorState());
+          emit(TopHeadlinesErrorState(error: error));
         },
             (model){
-          responseModel = model;
-          emit(TopHeadlinesSuccessState());
+          emit(TopHeadlinesSuccessState(responseModel: model));
         }
     );
   }
